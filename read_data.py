@@ -30,10 +30,17 @@ class Tokenizer:
         sequence.append(EOS_token)
         return torch.tensor(sequence, dtype=torch.long, device=device).view(-1, 1)
 
+    def decodeSequence(self, sequence):
+        sentence = []
+        for i in range(sequence.shape[0]):
+            sentence.append(self.token2word[sequence[i][0].item()])
+        sentence = ' '.join(sentence)
+        return sentence
+
 
 # Remove special characters and makes it lowercase
 def cleanseString(s):
-    s = re.sub(r'[^\w\s]', '', s).strip().lower()
+    s = re.sub(r'[^\w\s]', ' ', s).strip().lower()
     return s
 
 
@@ -47,16 +54,37 @@ def readData():
 
     return data
 
-MAX_LENGTH = 8
-MIN_LENGTH = 6
+MAX_LENGTH = 6
+MIN_LENGTH = 4
+
+eng_prefixes = (
+    "i am ", "i m ",
+    "he is", "he s ",
+    "she is", "she s ",
+    "you are", "you re ",
+    "we are", "we re ",
+    "they are", "they re "
+)
+
+def filterPair(p):
+    return MIN_LENGTH < len(p[0].split(' ')) < MAX_LENGTH and \
+        MIN_LENGTH < len(p[1].split(' ')) < MAX_LENGTH
+           # and p[0].startswith(eng_prefixes)
+
 
 def removeLongSentences(pairs):
-    return [pair for pair in pairs if ((MIN_LENGTH < len(pair[0].split(' ')) < MAX_LENGTH) and (MIN_LENGTH < len(pair[1].split(' ')) < MAX_LENGTH))]
+    return [pair for pair in pairs if filterPair(pair)]
+
+
+# def removeLongSentences(pairs):
+#     return [pair for pair in pairs if ((MIN_LENGTH < len(pair[0].split(' ')) < MAX_LENGTH) and (MIN_LENGTH < len(pair[1].split(' ')) < MAX_LENGTH))]
 
 def prepareData():
     # Get english2french data
     data = readData()
     data = removeLongSentences(data)
+    print(len(data))
+
 
     eng_tokenizer = Tokenizer()
     fr_tokenizer = Tokenizer()
