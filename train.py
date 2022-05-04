@@ -55,18 +55,15 @@ def train(input_tensor, target_tensor, encoder, decoder, encoder_optimizer, deco
     return loss.item()
 
 
-def trainIters(encoder, decoder, epochs, train_loader, val_loader, MAX_LENGTH, device, teacher_forcing_ratio, learning_rate=0.01):
+def trainIters(encoder, decoder, epochs, train_loader, val_loader, MAX_LENGTH, device, teacher_forcing_ratio):
     train_loss = []
     val_loss = []
 
     # Both optimizers
-    # encoder_optimizer = optim.SGD(encoder.parameters(), lr=learning_rate)
-    # decoder_optimizer = optim.SGD(decoder.parameters(), lr=learning_rate)
     encoder_optimizer = optim.Adam(encoder.parameters())
     decoder_optimizer = optim.Adam(decoder.parameters())
 
 
-    # criterion = nn.NLLLoss()
     criterion = nn.CrossEntropyLoss()
 
     for epoch in range(epochs):
