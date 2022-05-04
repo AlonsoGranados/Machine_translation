@@ -5,7 +5,6 @@ from networks import DecoderRNN
 from read_data import prepareData
 from train import trainIters
 from sklearn.model_selection import train_test_split
-from evaluation import evaluateRandomly
 from evaluation import evaluate
 
 
@@ -19,8 +18,7 @@ EOS_token = 1
 MAX_LENGTH = 6
 
 eng_tokenizer, fr_tokenizer, data = prepareData()
-# print(data[:100])
-# data = data[:1000]
+
 # Encode data
 data = [(eng_tokenizer.encodeSequence(sentence[0],device), fr_tokenizer.encodeSequence(sentence[1],device)) for sentence in data]
 
@@ -30,8 +28,8 @@ train_data, validation_data = train_test_split(train_data, test_size=0.10, rando
 
 # Parameters
 teacher_forcing_ratio = 0.5
-dropout_rate = 0.5
-hidden_size = 512
+dropout_rate = 0.25
+hidden_size = 256
 # encoder = simpleEncoderRNN(eng_tokenizer.voc_size, hidden_size,dropout_prob=0.5).to(device)
 # decoder = simpleDecoderRNN(hidden_size, fr_tokenizer.voc_size, dropout_prob=0.5).to(device)
 encoder = EncoderRNN(eng_tokenizer.voc_size, hidden_size, dropout_prob= dropout_rate).to(device)
@@ -43,12 +41,12 @@ train_loader = DataLoader(train_data,shuffle=True,batch_size=32)
 val_loader = DataLoader(validation_data,shuffle=True,batch_size=32)
 test_loader = DataLoader(test_data,shuffle=True,batch_size=32)
 
+
 trainIters(encoder, decoder, 20, train_loader, val_loader, MAX_LENGTH, device, teacher_forcing_ratio)
 
 encoder.dropout = torch.nn.Dropout(0)
 decoder.dropout = torch.nn.Dropout(0)
 
-# evaluateRandomly(encoder, decoder, test_data, MAX_LENGTH, eng_tokenizer, fr_tokenizer, device)
 
 import nltk
 average_blue_score = 0

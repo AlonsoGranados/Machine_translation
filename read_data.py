@@ -57,15 +57,6 @@ def readData():
 MAX_LENGTH = 6
 MIN_LENGTH = 4
 
-eng_prefixes = (
-    "i am ", "i m ",
-    "he is", "he s ",
-    "she is", "she s ",
-    "you are", "you re ",
-    "we are", "we re ",
-    "they are", "they re "
-)
-
 def filterPair(p):
     return MIN_LENGTH < len(p[0].split(' ')) < MAX_LENGTH and \
         MIN_LENGTH < len(p[1].split(' ')) < MAX_LENGTH
@@ -76,15 +67,11 @@ def removeLongSentences(pairs):
     return [pair for pair in pairs if filterPair(pair)]
 
 
-# def removeLongSentences(pairs):
-#     return [pair for pair in pairs if ((MIN_LENGTH < len(pair[0].split(' ')) < MAX_LENGTH) and (MIN_LENGTH < len(pair[1].split(' ')) < MAX_LENGTH))]
-
 def prepareData():
     # Get english2french data
     data = readData()
     data = removeLongSentences(data)
     print(len(data))
-
 
     eng_tokenizer = Tokenizer()
     fr_tokenizer = Tokenizer()
