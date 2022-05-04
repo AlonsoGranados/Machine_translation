@@ -8,7 +8,7 @@ Networks.py: This file includes both network architectures RNN and GRU.
 
 read_data.py: This file reads the text file and encodes sentences into sequences of tokens.
 
-train.py: This file includes the logic to get mini batches, compute forward and backward pass, and prediction in validation loss.
+train.py: This file includes the logic to get mini batches, forward and backward pass, and compute validation loss.
 
 evaluation.py: This file executes a forward pass for a sample.
 
