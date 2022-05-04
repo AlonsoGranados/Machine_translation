@@ -12,6 +12,11 @@ train.py: This file includes the logic to get mini batches, compute forward and 
 
 evaluation.py: This file executes a forward pass for a sample.
 
-Credits to Sean Robertson for his pytorch tutorial that helped me frame the training step,
+Dataset can be downloaded at:
+
+https://www.manythings.org/anki/
+
+
+Credits to Sean Robertson for his pytorch tutorial that helped me frame the training step:
 
 https://pytorch.org/tutorials/intermediate/seq2seq_translation_tutorial.html
