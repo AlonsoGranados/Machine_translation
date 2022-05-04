@@ -1,4 +1,4 @@
-# Machine_translation
+# Machine Translation English2French: A CS539 NLP Project
 
 Project structure: 
 
